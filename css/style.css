@@ -901,6 +901,12 @@ body.cursor-text .cursor-follower { width: 80px; height: 80px; opacity: 0.12; bo
 .gallery--slideshow .gallery__grid { display: none !important; }
 .gallery--slideshow .gallery__track { display: flex; }
 
+/* Hide slideshow controls on desktop by default */
+.gallery__arrow { display: none; }
+.gallery__dots { display: none; }
+.gallery--slideshow .gallery__arrow { display: flex; }
+.gallery--slideshow .gallery__dots { display: flex; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
   .hero__content { grid-template-columns: 1fr; }
