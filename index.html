@@ -601,17 +601,17 @@
     </div>
     
     <div class="configurator" id="configurator">
-      <div class="config-progress">
-        <div class="config-progress__bar"><div class="config-progress__fill" id="progressFill"></div></div>
-        <div class="config-progress__dots">
-          <div class="step-dot active"><span data-i18n="step1_label">Качи</span></div>
-          <div class="step-dot"><span data-i18n="step2_label">Опиши</span></div>
-          <div class="step-dot"><span data-i18n="step3_label">Персонализирай</span></div>
-          <div class="step-dot"><span data-i18n="step4_label">Преглед</span></div>
+      <div class="configurator__progress">
+        <div class="configurator__progress-track"><div class="configurator__progress-fill" id="progressFill"></div></div>
+        <div class="configurator__steps-indicators">
+          <div class="step-dot active"><span>1</span><p data-i18n="step1_label">Качи</p></div>
+          <div class="step-dot"><span>2</span><p data-i18n="step2_label">Опиши</p></div>
+          <div class="step-dot"><span>3</span><p data-i18n="step3_label">Персонализирай</p></div>
+          <div class="step-dot"><span>4</span><p data-i18n="step4_label">Преглед</p></div>
         </div>
       </div>
       
-      <div class="config-steps">
+      <div class="configurator__body">
         <!-- STEP 1: Upload -->
         <div class="config-step active" id="step1" data-step="1">
           <h3 class="config-step__title" data-i18n="step1_title">Качи своите снимки</h3>
