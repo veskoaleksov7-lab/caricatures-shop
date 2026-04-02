@@ -496,40 +496,38 @@ document.addEventListener('click', function (e) {
       const reader = new FileReader();
       reader.onload = e => {
         const thumb = document.createElement('div');
-        thumb.style.position = 'relative';
-        thumb.style.width = '80px';
-        thumb.style.height = '80px';
-        thumb.style.borderRadius = '8px';
-        thumb.style.overflow = 'hidden';
-        
+        thumb.className = 'thumb-wrapper';
+        thumb.dataset.index = index;
+
         const img = document.createElement('img');
         img.src = e.target.result;
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-        
+        img.className = 'thumb-img';
+        img.alt = file.name;
+
         const removeBtn = document.createElement('button');
-        removeBtn.innerHTML = '×';
-        removeBtn.style.position = 'absolute';
-        removeBtn.style.top = '4px';
-        removeBtn.style.right = '4px';
-        removeBtn.style.background = 'rgba(0,0,0,0.6)';
-        removeBtn.style.color = '#fff';
-        removeBtn.style.border = 'none';
-        removeBtn.style.borderRadius = '50%';
-        removeBtn.style.width = '20px';
-        removeBtn.style.height = '20px';
-        removeBtn.style.cursor = 'pointer';
-        removeBtn.style.display = 'flex';
-        removeBtn.style.alignItems = 'center';
-        removeBtn.style.justifyContent = 'center';
-        removeBtn.style.fontSize = '14px';
-        
-        removeBtn.onclick = (e) => {
-          e.stopPropagation();
-          window.uploadedFiles.splice(index, 1);
+        removeBtn.innerHTML = '&times;';
+        removeBtn.className = 'thumb-remove';
+        removeBtn.type = 'button';
+        removeBtn.setAttribute('data-remove-index', index);
+        // Override cursor:none from global CSS and ensure it's above the fileInput overlay
+        removeBtn.style.cssText = `
+          position: absolute; top: 4px; right: 4px;
+          width: 22px; height: 22px; border-radius: 50%;
+          background: rgba(180,30,30,0.85); color: #fff;
+          border: none; font-size: 15px; line-height: 1;
+          display: flex; align-items: center; justify-content: center;
+          z-index: 10; cursor: pointer !important;
+          pointer-events: all !important;
+          transition: transform 0.15s, background 0.15s;
+        `;
+
+        removeBtn.addEventListener('click', function(ev) {
+          ev.stopPropagation();
+          ev.preventDefault();
+          const idx = parseInt(this.getAttribute('data-remove-index'), 10);
+          window.uploadedFiles.splice(idx, 1);
           renderGrid();
-        };
+        });
 
         thumb.appendChild(img);
         thumb.appendChild(removeBtn);
