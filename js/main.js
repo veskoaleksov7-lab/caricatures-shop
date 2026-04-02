@@ -540,9 +540,10 @@ document.addEventListener('click', function (e) {
   }
 
   zone.addEventListener('click', e => {
-    if (e.target.tagName !== 'BUTTON') {
-      fileInput.click();
-    }
+    // fileInput covers the whole zone (position:absolute, inset:0)
+    // Only programmatically click it if the user clicked on something other than the input or a remove button
+    if (e.target === fileInput || e.target.tagName === 'BUTTON') return;
+    fileInput.click();
   });
 
   fileInput.addEventListener('change', () => { 

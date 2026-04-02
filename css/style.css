@@ -440,7 +440,8 @@ body.cursor-text .cursor-follower { width: 80px; height: 80px; opacity: 0.12; bo
 .modal__cta { padding: 10px 22px; font-size: 0.82rem; }
 
 /* ── HOW IT WORKS ── */
-.how-it-works {
+/* Support both .how-it-works (old) and .how (current HTML) */
+.how-it-works, .how {
   padding: 120px 40px;
   background: linear-gradient(160deg, #F2EAE3 0%, var(--c-bg) 100%);
   position: relative; overflow: hidden;
@@ -451,23 +452,29 @@ body.cursor-text .cursor-follower { width: 80px; height: 80px; opacity: 0.12; bo
   background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 70%);
   pointer-events: none;
 }
-.how__steps {
+/* Support both .how__steps (CSS) and .how__timeline (HTML) */
+.how__steps, .how__timeline {
   max-width: 860px; margin: 0 auto;
   display: flex; flex-direction: column; gap: 0;
 }
 .how__step {
-  display: grid; grid-template-columns: 80px 80px 1fr; gap: 24px;
+  display: grid; grid-template-columns: 80px 1fr; gap: 32px;
   align-items: start; position: relative;
   padding: 40px 0;
+  border-bottom: 1px solid var(--c-border);
   opacity: 0; transform: translateX(-30px);
   transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
 }
+.how__step:last-child { border-bottom: none; }
 .how__step.visible { opacity: 1; transform: none; }
-#howStep2 { transition-delay: 0.15s; }
-#howStep3 { transition-delay: 0.3s; }
-.how__step-num {
-  font-family: var(--font-serif); font-size: 4.5rem; font-weight: 900;
-  color: var(--c-border); line-height: 1; align-self: start;
+/* Support both .how__step-num (CSS) and .how__num (HTML) */
+.how__step-num, .how__num {
+  font-family: var(--font-serif); font-size: 4rem; font-weight: 900;
+  color: var(--c-gold); line-height: 1; align-self: start;
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(201,169,110,0.1); border: 2px solid var(--c-gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; flex-shrink: 0;
 }
 .how__step-icon {
   width: 72px; height: 72px; border-radius: var(--radius-md);
@@ -477,14 +484,14 @@ body.cursor-text .cursor-follower { width: 80px; height: 80px; opacity: 0.12; bo
   color: var(--c-gold);
   transition: box-shadow var(--t-med), transform var(--t-med);
 }
-.how__step:hover .how__step-icon { box-shadow: var(--shadow-gold); transform: translateY(-3px); }
-.how__step-content h3 {
+/* Support both .how__step-content (CSS) and .how__content (HTML) */
+.how__step-content h3, .how__content h3 {
   font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700;
   color: var(--c-primary); margin-bottom: 10px;
 }
-.how__step-content p { font-size: 0.95rem; color: var(--c-text-muted); line-height: 1.8; }
+.how__step-content p, .how__content p { font-size: 0.95rem; color: var(--c-text-muted); line-height: 1.8; }
 .how__step-connector {
-  position: absolute; left: 119px; top: 112px; bottom: -40px; width: 1px;
+  position: absolute; left: 80px; top: 100px; bottom: -40px; width: 1px;
   background: linear-gradient(to bottom, var(--c-gold-light), transparent);
 }
 
