@@ -204,25 +204,105 @@ document.addEventListener('click', function (e) {
   });
 })();
 
+/* ── MOBILE GALLERY SLIDER ── */
+(function initMobileSlider() {
+  function isMobile() { return window.innerWidth <= 768; }
+  if (!isMobile()) return;
+
+  const grid = document.getElementById('galleryGrid');
+  const gallery = document.querySelector('.gallery');
+  if (!grid || !gallery) return;
+
+  // Create dots container
+  const dotsWrap = document.createElement('div');
+  dotsWrap.id = 'galleryDots';
+  dotsWrap.style.cssText = `
+    display: flex; justify-content: center; gap: 8px;
+    padding: 8px 20px 0; flex-wrap: wrap;
+  `;
+  gallery.appendChild(dotsWrap);
+
+  function buildDots() {
+    dotsWrap.innerHTML = '';
+    const items = grid.querySelectorAll('.gallery__item:not(.hidden)');
+    items.forEach((_, i) => {
+      const dot = document.createElement('span');
+      dot.style.cssText = `
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--c-border); display: inline-block;
+        transition: background 0.3s, transform 0.3s; cursor: pointer;
+      `;
+      dot.addEventListener('click', () => {
+        const visibleItems = grid.querySelectorAll('.gallery__item:not(.hidden)');
+        if (visibleItems[i]) {
+          visibleItems[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        }
+      });
+      dotsWrap.appendChild(dot);
+    });
+    updateDots();
+  }
+
+  function updateDots() {
+    const dots = dotsWrap.querySelectorAll('span');
+    const items = grid.querySelectorAll('.gallery__item:not(.hidden)');
+    if (!items.length) return;
+    const scrollLeft = grid.scrollLeft;
+    const itemWidth = items[0] ? items[0].offsetWidth + 12 : 1;
+    const activeIdx = Math.round(scrollLeft / itemWidth);
+    dots.forEach((d, i) => {
+      const active = i === activeIdx;
+      d.style.background = active ? 'var(--c-gold)' : 'var(--c-border)';
+      d.style.transform = active ? 'scale(1.3)' : 'scale(1)';
+    });
+  }
+
+  grid.addEventListener('scroll', updateDots, { passive: true });
+
+  // Rebuild dots when filter changes
+  document.querySelectorAll('.gallery__filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTimeout(() => { buildDots(); grid.scrollTo({ left: 0, behavior: 'smooth' }); }, 320);
+    });
+  });
+
+  buildDots();
+
+  // Rebuild on resize
+  window.addEventListener('resize', () => {
+    if (isMobile()) buildDots();
+    else dotsWrap.style.display = 'none';
+  });
+})();
+
 /* ── CONFIGURATOR ── */
 (function initConfigurator() {
-  // Pricing
-  const BASE_PRICE = 59;
-  const FACE_PRICE = 25;
-  const ELEMENT_PRICE = 15;
-  const PRINT_PRICE = 15;
-  const EXPRESS_PRICE = 20;
+  // ── ЦЕНИ (промени тук за актуализация) ──
+  const BASE_PRICE = 20;      // Базова цена (1 карикатура, 1 лице)
+  const FACE_PRICE = 2;       // +€2 за всяко допълнително лице
+  const ELEMENT_PRICE = 2;    // +€2 за всеки елемент с изображение (1-вият е безплатен)
+  const PRINT_A4_PRICE = 5;   // Печат в рамка А4 (21x30 см)
+  const PRINT_A3_PRICE = 10;  // Печат в рамка А3 (30x42 см)
+  const EXPRESS_PRICE = 10;   // Експресна доставка 24ч
 
   let state = {
     faces: 1, elements: 0,
-    print: false, express: false,
+    printSize: 'none', // 'none' | 'a4' | 'a3'
+    express: false,
     style: 'classic',
     email: ''
   };
 
   function getTotal() {
-    let t = BASE_PRICE + (state.faces - 1) * FACE_PRICE + state.elements * ELEMENT_PRICE;
-    if (state.print) t += PRINT_PRICE;
+    let t = BASE_PRICE;
+    // Допълнителни лица: от 2-ро нагоре
+    if (state.faces > 1) t += (state.faces - 1) * FACE_PRICE;
+    // Елементи: 1-вият е безплатен, от 2-ри нагоре +€2
+    if (state.elements > 1) t += (state.elements - 1) * ELEMENT_PRICE;
+    // Печат в рамка
+    if (state.printSize === 'a4') t += PRINT_A4_PRICE;
+    if (state.printSize === 'a3') t += PRINT_A3_PRICE;
+    // Експресна доставка
     if (state.express) t += EXPRESS_PRICE;
     return t;
   }
@@ -250,8 +330,9 @@ document.addEventListener('click', function (e) {
     document.getElementById('reviewFaces').textContent = state.faces;
     document.getElementById('reviewElements').textContent = state.elements;
     document.getElementById('reviewStyle').textContent = state.style.charAt(0).toUpperCase() + state.style.slice(1);
-    document.getElementById('reviewPrint').textContent = state.print ? 'Yes (+€' + PRINT_PRICE + ')' : 'No';
-    document.getElementById('reviewExpress').textContent = state.express ? 'Yes (+€' + EXPRESS_PRICE + ', 24h)' : 'No (48h)';
+    const printLabels = { none: 'Не', a4: 'А4 рамка (+€5)', a3: 'А3 рамка (+€10)' };
+    document.getElementById('reviewPrint').textContent = printLabels[state.printSize] || 'Не';
+    document.getElementById('reviewExpress').textContent = state.express ? 'Да (+€10, 24ч)' : 'Не (48ч)';
   }
 
   // Counter buttons
@@ -276,13 +357,17 @@ document.addEventListener('click', function (e) {
   makeCounter('elementsUp', 'elementsDown', 'elementsVal', 'elements', 0, 6);
 
   // Toggles
-  document.getElementById('printToggle').addEventListener('change', e => {
-    state.print = e.target.checked;
-    updatePriceUI();
-  });
   document.getElementById('expressToggle').addEventListener('change', e => {
     state.express = e.target.checked;
     updatePriceUI();
+  });
+
+  // Print size radio buttons
+  document.querySelectorAll('input[name="printSize"]').forEach(radio => {
+    radio.addEventListener('change', e => {
+      state.printSize = e.target.value;
+      updatePriceUI();
+    });
   });
 
   // Style chips
@@ -765,12 +850,18 @@ document.querySelector('.modal__cta')?.addEventListener('click', () => {
       step3_title: 'Персонализирай поръчката си',
       step3_sub: 'Цените се обновяват автоматично с всеки твой избор.',
       faces_h: 'Брой лица / хора',
-      faces_p: '€25 за всяко допълнително лице',
-      elements_h: 'Персонализирани елементи / домашни любимци',
-      elements_p: '€15 за всеки допълнителен елемент или любимец',
+      faces_p: '+€2 за всяко допълнително лице (от 2-ро нагоре)',
+      elements_h: 'Допълнителни елементи',
+      elements_p: '1 елемент безплатно. Елементи с описание с думи (топка, пура, куче...) — безплатни. Елементи с конкретно изображение: +€2/бр.',
       express_h: 'Експресна доставка (24ч)',
       express_p: 'С приоритет от нашия старши артист',
       btn_review: 'Прегледай поръчката',
+      delivery_label: 'Формат на доставка',
+      delivery_sub: 'Получаваш дигитален файл с висока резолюция. По желание можеш да добавиш печат в рамка.',
+      print_none: 'Само дигитален файл',
+      print_a4: 'Печат в рамка А4 (21×30 см)',
+      print_a3: 'Печат в рамка А3 (30×42 см)',
+      review_print_label: 'Печат в рамка',
       // Step 4
       step4_title: 'Прегледай поръчката си',
       step4_sub: 'Всичко изглежда перфектно? Нека го направим официално.',

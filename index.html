@@ -30,7 +30,6 @@
     <ul class="nav__links">
       <li><a href="#gallery" class="nav__link" data-i18n="nav_gallery">Галерия</a></li>
       <li><a href="#how-it-works" class="nav__link" data-i18n="nav_process">Процес</a></li>
-      <li><a href="#order" class="nav__link" data-i18n="nav_order">Поръчай</a></li>
       <li><a href="#footer" class="nav__link" data-i18n="nav_contact">Контакт</a></li>
     </ul>
     <a href="#order" class="btn btn--nav ripple-btn" id="navCta" data-i18n="nav_cta">Създай карикатура</a>
@@ -58,8 +57,8 @@
   <div class="nav__mobile-menu" id="mobileMenu">
     <a href="#gallery" class="nav__mobile-link" data-i18n="nav_gallery">Галерия</a>
     <a href="#how-it-works" class="nav__mobile-link" data-i18n="nav_process">Процес</a>
-    <a href="#order" class="nav__mobile-link" data-i18n="nav_order">Поръчай</a>
     <a href="#footer" class="nav__mobile-link" data-i18n="nav_contact">Контакт</a>
+    <a href="#order" class="nav__mobile-link btn btn--primary" style="margin-top:8px;" data-i18n="nav_cta">Създай карикатура</a>
   </div>
 
   <!-- ========== HERO SECTION ========== -->
@@ -677,14 +676,29 @@
 
           <div class="field-group">
             <label class="field-label" data-i18n="delivery_label">Формат на доставка</label>
-            <div class="toggle-row">
-              <span data-i18n="print_label">Дигитален файл (PNG/PDF)</span>
-              <label class="liquid-toggle" for="printToggle" aria-label="Добави печатен пакет">
-                <input type="checkbox" id="printToggle" />
-                <span class="liquid-toggle__track"></span>
+            <p class="toggle-sub" style="margin-bottom:12px;font-size:0.82rem;" data-i18n="delivery_sub">Получаваш дигитален файл с висока резолюция. По желание можеш да добавиш печат в рамка.</p>
+            <div class="print-options">
+              <label class="print-option" id="printOptionNone">
+                <input type="radio" name="printSize" value="none" id="printNone" checked />
+                <span class="print-option__box">
+                  <span class="print-option__title" data-i18n="print_none">Само дигитален файл</span>
+                  <span class="print-option__price">включено</span>
+                </span>
               </label>
-              <span><span data-i18n="print_extra">+ Премиум печатен пакет</span> <span
-                  class="badge-price">+€15</span></span>
+              <label class="print-option" id="printOptionA4">
+                <input type="radio" name="printSize" value="a4" id="printA4" />
+                <span class="print-option__box">
+                  <span class="print-option__title" data-i18n="print_a4">Печат в рамка А4 (21×30 см)</span>
+                  <span class="print-option__price">+€5</span>
+                </span>
+              </label>
+              <label class="print-option" id="printOptionA3">
+                <input type="radio" name="printSize" value="a3" id="printA3" />
+                <span class="print-option__box">
+                  <span class="print-option__title" data-i18n="print_a3">Печат в рамка А3 (30×42 см)</span>
+                  <span class="print-option__price">+€10</span>
+                </span>
+              </label>
             </div>
           </div>
 
@@ -717,7 +731,7 @@
               </div>
               <div class="counter-card__info">
                 <h4 data-i18n="faces_h">Брой лица / хора</h4>
-                <p data-i18n="faces_p">€25 за всяко допълнително лице</p>
+                <p data-i18n="faces_p">+€2 за всяко допълнително лице</p>
               </div>
               <div class="counter-card__control">
                 <button class="counter-btn" id="facesDown" aria-label="Намали броя лица">−</button>
@@ -734,8 +748,8 @@
                 </svg>
               </div>
               <div class="counter-card__info">
-                <h4 data-i18n="elements_h">Персонализирани елементи / домашни любимци</h4>
-                <p data-i18n="elements_p">€15 за всеки допълнителен елемент или любимец</p>
+                <h4 data-i18n="elements_h">Допълнителни елементи</h4>
+                <p data-i18n="elements_p">1 елемент безплатно — елементи с описание с думи (топка, пура, куче, Дубай, Къща) са безплатни. Елементи с конкретно изображение: +€2/бр.</p>
               </div>
               <div class="counter-card__control">
                 <button class="counter-btn" id="elementsDown" aria-label="Намали елементите">−</button>
@@ -755,7 +769,7 @@
                 <input type="checkbox" id="expressToggle" />
                 <span class="liquid-toggle__track"></span>
               </label>
-              <span class="badge-price" id="expressBadge">+€20</span>
+              <span class="badge-price" id="expressBadge">+€10</span>
             </div>
           </div>
 
@@ -794,8 +808,8 @@
               <span class="review-val"><span id="reviewElements">0</span></span>
             </div>
             <div class="review-row">
-              <span data-i18n="review_print_label">Печатен пакет</span>
-              <span class="review-val" id="reviewPrint" data-i18n="review_no">Не</span>
+              <span data-i18n="review_print_label">Печат в рамка</span>
+              <span class="review-val" id="reviewPrint">Не</span>
             </div>
             <div class="review-row">
               <span data-i18n="review_express_label">Експресна доставка</span>
@@ -804,7 +818,7 @@
             <div class="review-divider"></div>
             <div class="review-row review-row--total">
               <strong data-i18n="review_total">Общо</strong>
-              <strong class="price-display" id="reviewTotal">€59</strong>
+              <strong class="price-display" id="reviewTotal">€20</strong>
             </div>
           </div>
 
@@ -829,7 +843,7 @@
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
               </svg>
-              <span data-i18n="btn_add_cart">Добави в количката —</span> <span id="cartBtnPrice">€59</span>
+              <span data-i18n="btn_add_cart">Добави в количката —</span> <span id="cartBtnPrice">€20</span>
             </button>
           </div>
         </div>
