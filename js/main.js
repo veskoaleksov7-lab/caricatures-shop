@@ -334,7 +334,7 @@ document.addEventListener('click', function (e) {
   // Next / Prev buttons
   document.getElementById('step1Next').addEventListener('click', () => {
     const fileInput = document.getElementById('fileInput');
-    if (!fileInput.files || fileInput.files.length === 0) {
+    if (!window.uploadedFiles || window.uploadedFiles.length === 0) {
       const zone = document.getElementById('uploadZone');
       zone.style.border = '2px solid red';
       setTimeout(() => zone.style.border = '', 1000);
@@ -402,11 +402,10 @@ document.addEventListener('click', function (e) {
   cartBackdrop.addEventListener('click', closeCart);
   document.getElementById('cartToggle').addEventListener('click', openCart);
   document.getElementById('checkoutBtn').addEventListener('click', async () => {
-    const fileInput = document.getElementById('fileInput');
     const checkoutBtn = document.getElementById('checkoutBtn');
     
-    if (!fileInput.files || fileInput.files.length === 0) {
-      alert("Моля, качете снимка преди да завършите поръчката!");
+    if (!window.uploadedFiles || window.uploadedFiles.length === 0) {
+      alert("Моля, качете поне една снимка преди да завършите поръчката!");
       return;
     }
 
@@ -421,19 +420,53 @@ document.addEventListener('click', function (e) {
     caption += `🐾 *Елементи:* ${state.elements}\n`;
     caption += `🖨️ *Печат:* ${state.print ? "Да" : "Не"}\n`;
     caption += `⚡ *Експресна:* ${state.express ? "Да" : "Не"}\n`;
-    caption += `\n📝 *Описание:*\n${visionText.value || "Няма описание"}`;
-
-    const formData = new FormData();
-    formData.append('chat_id', '2104447273');
-    formData.append('photo', fileInput.files[0]);
-    formData.append('caption', caption);
-    formData.append('parse_mode', 'Markdown');
+    caption += `\n📝 *Описание:*\n${document.getElementById('visionText').value || "Няма описание"}`;
 
     try {
-      const response = await fetch('https://api.telegram.org/bot8288215249:AAE1xkxOHOJmTzH9yLqwVe8MoJ74WD8dZMw/sendPhoto', {
+      const formData = new FormData();
+      formData.append('chat_id', '2104447273');
+      
+      const mediaGroup = [];
+      
+      window.uploadedFiles.forEach((file, index) => {
+        const attachName = `photo${index}`;
+        formData.append(attachName, file);
+        
+        let mediaObj = {
+          type: 'photo',
+          media: `attach://${attachName}`
+        };
+        
+        if (index === 0) {
+          mediaObj.caption = caption;
+          mediaObj.parse_mode = 'Markdown';
+        }
+        mediaGroup.push(mediaObj);
+      });
+      
+      formData.append('media', JSON.stringify(mediaGroup));
+
+      const response = await fetch('https://api.telegram.org/bot8288215249:AAE1xkxOHOJmTzH9yLqwVe8MoJ74WD8dZMw/sendMediaGroup', {
         method: 'POST',
         body: formData
       });
+      const result = await response.json();
+
+      if (result.ok) {
+        alert('Поръчката е приета успешно! 🎉 Очаквайте нискокачествено превю на вашия шедьовър на имейла си в рамките на 48ч.');
+        closeCart();
+        setTimeout(() => window.location.reload(), 2000);
+      } else {
+        alert('Грешка при изпращането: ' + result.description);
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Грешка с мрежата. Моля, сигурете се че сте свързани с интернет.');
+    } finally {
+      checkoutBtn.innerText = originalText;
+      checkoutBtn.disabled = false;
+    }
+  });
       const result = await response.json();
 
       if (result.ok) {
@@ -459,45 +492,97 @@ document.addEventListener('click', function (e) {
   const fileInput = document.getElementById('fileInput');
   const preview = document.getElementById('uploadPreview');
   const inner = document.getElementById('uploadZoneInner');
-  const previewImg = document.getElementById('uploadPreviewImg');
-  const removeBtn = document.getElementById('removeUpload');
+  const grid = document.getElementById('uploadGrid');
+  
+  window.uploadedFiles = []; // Global state for files
 
-  function showPreview(file) {
-    if (!file || !file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      previewImg.src = e.target.result;
-      preview.style.display = 'flex';
-      inner.style.display = 'none';
-    };
-    reader.readAsDataURL(file);
+  function renderGrid() {
+    grid.innerHTML = '';
+    if (window.uploadedFiles.length === 0) {
+      preview.style.display = 'none';
+      inner.style.display = 'flex';
+      return;
+    }
+    preview.style.display = 'flex';
+    inner.style.display = 'none';
+
+    window.uploadedFiles.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const thumb = document.createElement('div');
+        thumb.style.position = 'relative';
+        thumb.style.width = '80px';
+        thumb.style.height = '80px';
+        thumb.style.borderRadius = '8px';
+        thumb.style.overflow = 'hidden';
+        
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.innerHTML = '×';
+        removeBtn.style.position = 'absolute';
+        removeBtn.style.top = '4px';
+        removeBtn.style.right = '4px';
+        removeBtn.style.background = 'rgba(0,0,0,0.6)';
+        removeBtn.style.color = '#fff';
+        removeBtn.style.border = 'none';
+        removeBtn.style.borderRadius = '50%';
+        removeBtn.style.width = '20px';
+        removeBtn.style.height = '20px';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.display = 'flex';
+        removeBtn.style.alignItems = 'center';
+        removeBtn.style.justifyContent = 'center';
+        removeBtn.style.fontSize = '14px';
+        
+        removeBtn.onclick = (e) => {
+          e.stopPropagation();
+          window.uploadedFiles.splice(index, 1);
+          renderGrid();
+        };
+
+        thumb.appendChild(img);
+        thumb.appendChild(removeBtn);
+        grid.appendChild(thumb);
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
   zone.addEventListener('click', e => {
-    // Prevent infinite click loop when clicking the fileInput itself
-    if (e.target !== fileInput && e.target !== removeBtn && !removeBtn.contains(e.target)) {
+    if (e.target.tagName !== 'BUTTON') {
       fileInput.click();
     }
   });
-  zone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fileInput.click(); });
 
-  fileInput.addEventListener('change', () => { if (fileInput.files[0]) showPreview(fileInput.files[0]); });
+  fileInput.addEventListener('change', () => { 
+    if (fileInput.files.length > 0) {
+      Array.from(fileInput.files).forEach(f => {
+        if(window.uploadedFiles.length < 10) {
+          window.uploadedFiles.push(f);
+        }
+      });
+      renderGrid();
+    }
+  });
 
   zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
   zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
   zone.addEventListener('drop', e => {
     e.preventDefault();
     zone.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file) showPreview(file);
-  });
-
-  removeBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    previewImg.src = '';
-    preview.style.display = 'none';
-    inner.style.display = 'flex';
-    fileInput.value = '';
+    if (e.dataTransfer.files.length > 0) {
+      Array.from(e.dataTransfer.files).forEach(f => {
+        if(window.uploadedFiles.length < 10 && f.type.startsWith('image/')) {
+          window.uploadedFiles.push(f);
+        }
+      });
+      renderGrid();
+    }
   });
 })();
 

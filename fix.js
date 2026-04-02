@@ -128,20 +128,17 @@ const goodHtml = `      <button class="modal__close" id="modalClose" aria-label=
           </button>
         </div>`;
 
-// Normalize logic for line endings
-const normalize = str => str.replace(/\\r\\n/g, '\\n').replace(/\\r/g, '\\n');
+const normalize = str => str.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 html = normalize(html).replace(normalize(badHtml), goodHtml);
 fs.writeFileSync(htmlPath, html, 'utf8');
 
 console.log("HTML structure restored.");
 
-// Now JS updates for multiple files and Telegram API
 const jsPath = 'js/main.js';
 let js = fs.readFileSync(jsPath, 'utf8');
 
-// Replace upload logic
-const oldUploadRegex = /\\/\\* ── UPLOAD DRAG & DROP ── \\*\\/[\\s\\S]*?\\}\\)\\(\\);/;
-const newUploadLogic = \`/* ── UPLOAD DRAG & DROP ── */
+const oldUploadRegex = new RegExp("/\\* ── UPLOAD DRAG \\& DROP ── \\*/[\\s\\S]*?\\}\\)\\(\\);");
+const newUploadLogic = `/* ── UPLOAD DRAG & DROP ── */
 (function initUpload() {
   const zone = document.getElementById('uploadZone');
   const fileInput = document.getElementById('fileInput');
@@ -239,13 +236,12 @@ const newUploadLogic = \`/* ── UPLOAD DRAG & DROP ── */
       renderGrid();
     }
   });
-})();\`;
+})();`;
 
 js = js.replace(oldUploadRegex, newUploadLogic);
 
-// Replace checkout logic to handle sendMediaGroup
-const oldCheckoutRegex = /document\\.getElementById\\('checkoutBtn'\\)\\.addEventListener\\('click', async \\(\\) => \\{[\\s\\S]*?\\}\\);/m;
-const newCheckoutLogic = \`document.getElementById('checkoutBtn').addEventListener('click', async () => {
+const oldCheckoutRegex = new RegExp("document\\.getElementById\\('checkoutBtn'\\)\\.addEventListener\\('click', async \\(\\) => \\{[\\s\\S]*?\\}\\);", "m");
+const newCheckoutLogic = `document.getElementById('checkoutBtn').addEventListener('click', async () => {
     const checkoutBtn = document.getElementById('checkoutBtn');
     
     if (!window.uploadedFiles || window.uploadedFiles.length === 0) {
@@ -310,13 +306,11 @@ const newCheckoutLogic = \`document.getElementById('checkoutBtn').addEventListen
       checkoutBtn.innerText = originalText;
       checkoutBtn.disabled = false;
     }
-  });\`;
+  });`;
 
 js = js.replace(oldCheckoutRegex, newCheckoutLogic);
-
-// also fix step1 validation to use window.uploadedFiles
-js = js.replace(/if \\(!fileInput.files \\|\\| fileInput\\.files\\.length === 0\\) \\{/, \`if (!window.uploadedFiles || window.uploadedFiles.length === 0) {\`);
+js = js.replace(/if \(!fileInput\.files \|\| fileInput\.files\.length === 0\) \{/, `if (!window.uploadedFiles || window.uploadedFiles.length === 0) {`);
 
 fs.writeFileSync(jsPath, js, 'utf8');
 
-console.log("JS multiple upload logic updated.");
+console.log("JS updated successfully.");

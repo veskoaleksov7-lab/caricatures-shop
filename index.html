@@ -554,32 +554,93 @@
   <div class="modal" id="galleryModal" role="dialog" aria-modal="true">
     <div class="modal__backdrop" id="modalBackdrop"></div>
     <div class="modal__content">
-      <button class="modal__close" id="modalClose" aria-label="Затвори">
+      <button class="modal__close" id="modalClose" aria-label="Затвори">×</button>
+      <img src="" alt="" class="modal__image" id="modalImage" />
+      <p class="modal__label" id="modalLabel"></p>
+      <a href="#order" class="btn btn--primary modal__cta ripple-btn" data-i18n="modal_cta">Поръчай подобна</a>
+    </div>
+  </div>
+
+  <!-- ========== HOW IT WORKS ========== -->
+  <section class="how" id="how-it-works">
+    <div class="section-header reveal-up">
+      <p class="section-eyebrow" data-i18n="hiw_eyebrow">Нашият процес</p>
+      <h2 class="section-title" data-i18n-html="hiw_title">Три стъпки до<br /><em>чиста магия.</em></h2>
+    </div>
+
+    <div class="how__timeline">
+      <div class="how__step how__step--reveal">
+        <div class="how__num">1</div>
+        <div class="how__content">
+          <h3 data-i18n="hiw_step1_h">Качи своята снимка</h3>
+          <p data-i18n="hiw_step1_p">Просто плъзни и пусни любимата си снимка. Нашата система приема всякакъв формат и ще те насочим към идеалния кадър.</p>
+        </div>
+      </div>
+      <div class="how__step how__step--reveal">
+        <div class="how__num">2</div>
+        <div class="how__content">
+          <h3 data-i18n="hiw_step2_h">Опиши своята визия</h3>
+          <p data-i18n="hiw_step2_p">Разкажи ни всичко — фонови теми, аксесоари, стилови предпочитания и всички специални детайли. Колкото повече споделиш, толкова по-магичен ще е резултатът.</p>
+        </div>
+      </div>
+      <div class="how__step how__step--reveal">
+        <div class="how__num">3</div>
+        <div class="how__content">
+          <h3 data-i18n="hiw_step3_h">Получи чиста магия</h3>
+          <p data-i18n="hiw_step3_p">В рамките на 48 часа шедьовърът ти пристига на имейл като висококачествен дигитален файл, готов за печат, споделяне и съхранение завинаги.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ORDER / CONFIGURATOR ========== -->
+  <section class="order" id="order">
+    <div class="section-header reveal-up">
+      <p class="section-eyebrow" data-i18n="order_eyebrow">Поръчай своето изкуство</p>
+      <h2 class="section-title" data-i18n-html="order_title">Създай своя<br /><em>шедьовър.</em></h2>
+    </div>
+    
+    <div class="configurator" id="configurator">
+      <div class="config-progress">
+        <div class="config-progress__bar"><div class="config-progress__fill" id="progressFill"></div></div>
+        <div class="config-progress__dots">
+          <div class="step-dot active"><span data-i18n="step1_label">Качи</span></div>
+          <div class="step-dot"><span data-i18n="step2_label">Опиши</span></div>
+          <div class="step-dot"><span data-i18n="step3_label">Персонализирай</span></div>
+          <div class="step-dot"><span data-i18n="step4_label">Преглед</span></div>
+        </div>
+      </div>
+      
+      <div class="config-steps">
+        <!-- STEP 1: Upload -->
+        <div class="config-step active" id="step1" data-step="1">
+          <h3 class="config-step__title" data-i18n="step1_title">Качи своите снимки</h3>
+          <p class="config-step__sub" data-i18n="step1_sub">Можеш да качиш до 10 снимки тук.</p>
+          
+          <div class="upload-zone" id="uploadZone" role="button" tabindex="0">
+            <div class="upload-zone__inner" id="uploadZoneInner">
+              <div class="upload-zone__icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
               </div>
-              <p class="upload-zone__text" data-i18n="upload_text">Плъзни и пусни снимката си тук</p>
-              <p class="upload-zone__sub">или <span class="upload-zone__link" data-i18n="upload_link">разгледай
-                  файловете</span></p>
+              <p class="upload-zone__text" data-i18n="upload_text">Плъзни и пусни снимките си тук</p>
+              <p class="upload-zone__sub">или <span class="upload-zone__link" data-i18n="upload_link">разгледай файловете</span></p>
               <p class="upload-zone__formats" data-i18n="upload_formats">JPG, PNG, HEIC до 20MB</p>
             </div>
-            <div class="upload-zone__preview" id="uploadPreview" style="display:none;">
-              <img src="" alt="Твоята качена снимка" id="uploadPreviewImg" />
-              <button class="upload-zone__remove" id="removeUpload" aria-label="Премахни снимката">×</button>
-              <div class="upload-zone__success">
-                <svg class="checkmark" viewBox="0 0 52 52">
-                  <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-                  <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-                </svg>
-                <span data-i18n="upload_success">Снимката е готова!</span>
+            
+            <div class="upload-zone__preview" id="uploadPreview" style="display:none; padding:1.5rem; width:100%;">
+              <div class="upload-grid" id="uploadGrid" style="display:flex; flex-wrap:wrap; gap:10px; width:100%; justify-content:center;">
+                <!-- Images will be injected here -->
               </div>
             </div>
-            <input type="file" id="fileInput" accept="image/*" class="upload-zone__input"
-              aria-label="Качване на файл" />
+            <input type="file" id="fileInput" accept="image/*" multiple class="upload-zone__input" aria-label="Качване на файлове" />
           </div>
 
           <button class="btn btn--primary btn--next ripple-btn" id="step1Next">
-            <span data-i18n="btn_continue">Продължи</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2">
+            <span data-i18n="btn_continue">Продължи</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg>
