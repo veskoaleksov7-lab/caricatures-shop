@@ -371,12 +371,14 @@ document.addEventListener('click', function (e) {
     document.getElementById('cartDetails').textContent = `${state.faces} face(s) · ${state.elements} element(s) · ${state.style}`;
     document.getElementById('cartCount').style.display = 'flex';
 
-    // Thumb
-    const uploadPreviewImg = document.getElementById('uploadPreviewImg');
-    if (uploadPreviewImg.src && uploadPreviewImg.src !== window.location.href) {
-      document.getElementById('cartThumb').src = uploadPreviewImg.src;
+    // Thumb - use first uploaded file if available
+    const cartThumb = document.getElementById('cartThumb');
+    if (window.uploadedFiles && window.uploadedFiles.length > 0) {
+      const reader = new FileReader();
+      reader.onload = e => { cartThumb.src = e.target.result; };
+      reader.readAsDataURL(window.uploadedFiles[0]);
     } else {
-      document.getElementById('cartThumb').src = 'assets/images/hero.png';
+      cartThumb.src = 'assets/images/hero.png';
     }
 
     openCart();
@@ -467,24 +469,8 @@ document.addEventListener('click', function (e) {
       checkoutBtn.disabled = false;
     }
   });
-      const result = await response.json();
 
-      if (result.ok) {
-        alert('Поръчката е приета успешно! 🎉 Очаквайте нискокачествено превю на вашия шедьовър на имейла си в рамките на 48ч.');
-        closeCart();
-        setTimeout(() => window.location.reload(), 2000);
-      } else {
-        alert('Размерът на снимката или мрежата предизвикаха грешка. ' + result.description);
-      }
-    } catch (error) {
-      console.error(error);
-      alert('Грешка с мрежата. Моля, сигурете се че сте свързани с интернет.');
-    } finally {
-      checkoutBtn.innerText = originalText;
-      checkoutBtn.disabled = false;
-    }
-  });
-})();
+})(); // END initConfigurator
 
 /* ── UPLOAD DRAG & DROP ── */
 (function initUpload() {
@@ -755,8 +741,8 @@ document.querySelector('.modal__cta')?.addEventListener('click', () => {
       step3_label: 'Персонализирай',
       step4_label: 'Преглед',
       // Step 1
-      step1_title: 'Качи своята снимка',
-      step1_sub: 'Висококачествените снимки дават най-добри резултати.',
+      step1_title: 'Качи своите снимки',
+      step1_sub: 'Можеш да качиш до 10 снимки тук.',
       upload_text: 'Плъзни и пусни снимката си тук',
       upload_link: 'разгледай файловете',
       upload_formats: 'JPG, PNG, HEIC до 20MB',
@@ -892,8 +878,8 @@ document.querySelector('.modal__cta')?.addEventListener('click', () => {
       step3_label: 'Customize',
       step4_label: 'Review',
       // Step 1
-      step1_title: 'Upload Your Photo',
-      step1_sub: 'High quality photos produce the most amazing results.',
+      step1_title: 'Upload Your Photos',
+      step1_sub: 'You can upload up to 10 photos here.',
       upload_text: 'Drag & drop your photo here',
       upload_link: 'browse files',
       upload_formats: 'JPG, PNG, HEIC up to 20MB',
