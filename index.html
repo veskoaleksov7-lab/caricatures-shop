@@ -30,6 +30,7 @@
     <ul class="nav__links">
       <li><a href="#gallery" class="nav__link" data-i18n="nav_gallery">Галерия</a></li>
       <li><a href="#how-it-works" class="nav__link" data-i18n="nav_process">Процес</a></li>
+      <li><a href="#order" class="nav__link" data-i18n="nav_order">Поръчай</a></li>
       <li><a href="#footer" class="nav__link" data-i18n="nav_contact">Контакт</a></li>
     </ul>
     <a href="#order" class="btn btn--nav ripple-btn" id="navCta" data-i18n="nav_cta">Създай карикатура</a>
@@ -57,8 +58,8 @@
   <div class="nav__mobile-menu" id="mobileMenu">
     <a href="#gallery" class="nav__mobile-link" data-i18n="nav_gallery">Галерия</a>
     <a href="#how-it-works" class="nav__mobile-link" data-i18n="nav_process">Процес</a>
+    <a href="#order" class="nav__mobile-link" data-i18n="nav_order">Поръчай</a>
     <a href="#footer" class="nav__mobile-link" data-i18n="nav_contact">Контакт</a>
-    <a href="#order" class="nav__mobile-link btn btn--primary" style="margin-top:8px;" data-i18n="nav_cta">Създай карикатура</a>
   </div>
 
   <!-- ========== HERO SECTION ========== -->
@@ -155,7 +156,15 @@
       <button class="gallery__filter" data-filter="hobbies" role="tab" data-i18n="filter_hobbies">Хобита</button>
     </div>
 
-    <div class="gallery__grid" id="galleryGrid">
+    <div class="gallery__slideshow" id="gallerySlideshow">
+      <button class="gallery__arrow gallery__arrow--prev" id="galleryPrev" aria-label="Предишна">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <div class="gallery__track-wrap">
+        <div class="gallery__track" id="galleryTrack">
+          <div class="gallery__grid" id="galleryGrid">
       <div class="gallery__item" data-category="birthdays">
         <div class="gallery__card tilt-card">
           <div class="gallery__skeleton"></div>
@@ -546,10 +555,18 @@
           </div>
         </div>
       </div>
-    </div>
+          </div> <!-- end gallery__grid -->
+        </div> <!-- end gallery__track -->
+      </div> <!-- end gallery__track-wrap -->
+      <button class="gallery__arrow gallery__arrow--next" id="galleryNext" aria-label="Следваща">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    </div> <!-- end gallery__slideshow -->
+    <div class="gallery__dots" id="galleryDots"></div>
+    </div> <!-- end .gallery__slideshow (old duplicate tag removed) -->
   </section>
-
-  <!-- Gallery Modal -->
   <div class="modal" id="galleryModal" role="dialog" aria-modal="true">
     <div class="modal__backdrop" id="modalBackdrop"></div>
     <div class="modal__content">

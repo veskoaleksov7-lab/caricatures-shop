@@ -204,76 +204,110 @@ document.addEventListener('click', function (e) {
   });
 })();
 
-/* ── MOBILE GALLERY SLIDER ── */
-(function initMobileSlider() {
-  function isMobile() { return window.innerWidth <= 768; }
-  if (!isMobile()) return;
+/* ── GALLERY SLIDESHOW ── */
+(function initSlideshow() {
+  const gallerySection = document.getElementById('gallery');
+  const track = document.getElementById('galleryTrack');
+  const dotsEl = document.getElementById('galleryDots');
+  const prevBtn = document.getElementById('galleryPrev');
+  const nextBtn = document.getElementById('galleryNext');
+  const filterBtns = document.querySelectorAll('.gallery__filter');
 
-  const grid = document.getElementById('galleryGrid');
-  const gallery = document.querySelector('.gallery');
-  if (!grid || !gallery) return;
+  let slides = [];
+  let current = 0;
+  let startX = 0;
 
-  // Create dots container
-  const dotsWrap = document.createElement('div');
-  dotsWrap.id = 'galleryDots';
-  dotsWrap.style.cssText = `
-    display: flex; justify-content: center; gap: 8px;
-    padding: 8px 20px 0; flex-wrap: wrap;
-  `;
-  gallery.appendChild(dotsWrap);
-
-  function buildDots() {
-    dotsWrap.innerHTML = '';
-    const items = grid.querySelectorAll('.gallery__item:not(.hidden)');
-    items.forEach((_, i) => {
-      const dot = document.createElement('span');
-      dot.style.cssText = `
-        width: 8px; height: 8px; border-radius: 50%;
-        background: var(--c-border); display: inline-block;
-        transition: background 0.3s, transform 0.3s; cursor: pointer;
-      `;
-      dot.addEventListener('click', () => {
-        const visibleItems = grid.querySelectorAll('.gallery__item:not(.hidden)');
-        if (visibleItems[i]) {
-          visibleItems[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-        }
-      });
-      dotsWrap.appendChild(dot);
+  function buildSlides(filter) {
+    const items = document.querySelectorAll('#galleryGrid .gallery__item');
+    slides = [];
+    items.forEach(item => {
+      if (filter === 'all' || item.dataset.category === filter) {
+        const img = item.querySelector('.gallery__img');
+        const label = item.querySelector('.gallery__overlay-label');
+        if (img) slides.push({ src: img.src, alt: img.alt || '', label: label ? label.textContent : '' });
+      }
     });
-    updateDots();
+    track.innerHTML = '';
+    slides.forEach((s, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'gallery__slide';
+      slide.innerHTML = `<img src="${s.src}" alt="${s.alt}" loading="lazy" /><div class="gallery__overlay"><p class="gallery__overlay-label">${s.label}</p><button class="gallery__view-btn ripple-btn" data-slide="${i}">Виж</button></div>`;
+      track.appendChild(slide);
+    });
+    dotsEl.innerHTML = '';
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'gallery__dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
+      dot.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(dot);
+    });
+    goTo(0, false);
   }
 
-  function updateDots() {
-    const dots = dotsWrap.querySelectorAll('span');
-    const items = grid.querySelectorAll('.gallery__item:not(.hidden)');
-    if (!items.length) return;
-    const scrollLeft = grid.scrollLeft;
-    const itemWidth = items[0] ? items[0].offsetWidth + 12 : 1;
-    const activeIdx = Math.round(scrollLeft / itemWidth);
-    dots.forEach((d, i) => {
-      const active = i === activeIdx;
-      d.style.background = active ? 'var(--c-gold)' : 'var(--c-border)';
-      d.style.transform = active ? 'scale(1.3)' : 'scale(1)';
-    });
+  function goTo(idx, animate) {
+    animate = animate !== false;
+    current = Math.max(0, Math.min(idx, slides.length - 1));
+    track.style.transition = animate ? 'transform 0.45s cubic-bezier(0.22,1,0.36,1)' : 'none';
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    dotsEl.querySelectorAll('.gallery__dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === slides.length - 1;
   }
 
-  grid.addEventListener('scroll', updateDots, { passive: true });
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
 
-  // Rebuild dots when filter changes
-  document.querySelectorAll('.gallery__filter').forEach(btn => {
+  document.addEventListener('keydown', e => {
+    if (!gallerySection.classList.contains('gallery--slideshow')) return;
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+    if (e.key === 'ArrowRight') goTo(current + 1);
+  });
+
+  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
+  });
+
+  track.addEventListener('click', e => {
+    const btn = e.target.closest('.gallery__view-btn');
+    if (!btn) return;
+    const idx = parseInt(btn.dataset.slide, 10);
+    const modal = document.getElementById('galleryModal');
+    const modalImg = document.getElementById('modalImage');
+    const modalLabel = document.getElementById('modalLabel');
+    if (slides[idx]) {
+      modalImg.src = slides[idx].src; modalImg.alt = slides[idx].alt;
+      modalLabel.textContent = slides[idx].label;
+      modal.classList.add('open'); document.body.style.overflow = 'hidden';
+    }
+  });
+
+  filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      setTimeout(() => { buildDots(); grid.scrollTo({ left: 0, behavior: 'smooth' }); }, 320);
+      if (gallerySection.classList.contains('gallery--slideshow')) {
+        buildSlides(btn.dataset.filter);
+      }
     });
   });
 
-  buildDots();
+  function checkSlideshow() {
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile && !gallerySection.classList.contains('gallery--slideshow')) {
+      gallerySection.classList.add('gallery--slideshow');
+      const activeFilter = document.querySelector('.gallery__filter.active');
+      buildSlides(activeFilter ? activeFilter.dataset.filter : 'all');
+    } else if (!isMobile && gallerySection.classList.contains('gallery--slideshow')) {
+      gallerySection.classList.remove('gallery--slideshow');
+      track.innerHTML = ''; dotsEl.innerHTML = '';
+    }
+  }
 
-  // Rebuild on resize
-  window.addEventListener('resize', () => {
-    if (isMobile()) buildDots();
-    else dotsWrap.style.display = 'none';
-  });
+  checkSlideshow();
+  window.addEventListener('resize', checkSlideshow);
 })();
+
 
 /* ── CONFIGURATOR ── */
 (function initConfigurator() {
