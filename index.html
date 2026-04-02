@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n-page-title="page_title">Арт Хаус Карикатури — Персонализирани Дигитални Портрети</title>
+  <meta name="description" data-i18n-attr="meta_desc"
+    content="Превърни снимките си в изключителни дигитални карикатури. Ръчно изработени за рождени дни, сватби, двойки, домашни любимци и професии." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="lang-bg">
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="nav" id="nav">
+    <div class="nav__logo">
+      <span class="nav__logo-art">ArtHouse</span>
+      <span class="nav__logo-sub" data-i18n="nav_logo_sub">Карикатури</span>
+    </div>
+    <ul class="nav__links">
+      <li><a href="#gallery" class="nav__link" data-i18n="nav_gallery">Галерия</a></li>
+      <li><a href="#how-it-works" class="nav__link" data-i18n="nav_process">Процес</a></li>
+      <li><a href="#order" class="nav__link" data-i18n="nav_order">Поръчай</a></li>
+      <li><a href="#footer" class="nav__link" data-i18n="nav_contact">Контакт</a></li>
+    </ul>
+    <a href="#order" class="btn btn--nav ripple-btn" id="navCta" data-i18n="nav_cta">Създай карикатура</a>
+
+    <!-- Language Toggle -->
+    <div class="lang-toggle" id="langToggle" role="button" tabindex="0" aria-label="Switch language">
+      <span class="lang-toggle__opt" data-lang="bg" id="langBg">БГ</span>
+      <span class="lang-toggle__divider">|</span>
+      <span class="lang-toggle__opt" data-lang="en" id="langEn">EN</span>
+    </div>
+
+    <button class="nav__cart-icon" id="cartToggle" aria-label="View cart">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <path d="M16 10a4 4 0 01-8 0" />
+      </svg>
+      <span class="nav__cart-count" id="cartCount" style="display:none;">1</span>
+    </button>
+    <button class="nav__hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav__mobile-menu" id="mobileMenu">
+    <a href="#gallery" class="nav__mobile-link" data-i18n="nav_gallery">Галерия</a>
+    <a href="#how-it-works" class="nav__mobile-link" data-i18n="nav_process">Процес</a>
+    <a href="#order" class="nav__mobile-link" data-i18n="nav_order">Поръчай</a>
+    <a href="#footer" class="nav__mobile-link" data-i18n="nav_contact">Контакт</a>
+  </div>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section class="hero" id="hero">
+    <div class="hero__shapes">
+      <div class="shape shape--1" data-depth="0.3"></div>
+      <div class="shape shape--2" data-depth="0.6"></div>
+      <div class="shape shape--3" data-depth="0.2"></div>
+      <div class="shape shape--4" data-depth="0.5"></div>
+    </div>
+
+    <div class="hero__content">
+      <div class="hero__text">
+        <p class="hero__eyebrow reveal-fade" data-i18n="hero_eyebrow">Персонализирано Дигитално Изкуство</p>
+        <h1 class="hero__headline reveal-up" data-i18n-html="hero_headline">
+          Твоята история,<br />
+          <em>превърната</em><br />
+          в изкуство.
+        </h1>
+        <p class="hero__sub reveal-up" style="--delay:0.15s" data-i18n="hero_sub">
+          Превръщаме най-скъпите ти моменти в изключително уникални дигитални карикатурни портрети. Премиум качество.
+          Безкрайни детайли.
+        </p>
+        <div class="hero__actions reveal-up" style="--delay:0.3s">
+          <a href="#order" class="btn btn--primary btn--magnetic ripple-btn" id="heroMagneticBtn">
+            <span data-i18n="hero_cta">Създай своята карикатура</span>
+            <svg class="btn__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </a>
+          <a href="#gallery" class="btn btn--ghost" data-i18n="hero_gallery">Разгледай галерията</a>
+        </div>
+        <div class="hero__badges reveal-fade" style="--delay:0.5s">
+          <div class="badge">
+            <span class="badge__num">2400+</span>
+            <span class="badge__label" data-i18n="badge_artworks">Създадени творби</span>
+          </div>
+          <div class="badge__divider"></div>
+          <div class="badge">
+            <span class="badge__num">98%</span>
+            <span class="badge__label" data-i18n="badge_clients">Доволни клиенти</span>
+          </div>
+          <div class="badge__divider"></div>
+          <div class="badge">
+            <span class="badge__num">48ч</span>
+            <span class="badge__label" data-i18n="badge_delivery">Доставка</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__artwork">
+        <div class="hero__artwork-frame" id="heroFrame">
+          <div class="hero__artwork-ring hero__artwork-ring--1"></div>
+          <div class="hero__artwork-ring hero__artwork-ring--2"></div>
+          <div class="hero__artwork-ring hero__artwork-ring--3"></div>
+          <div class="hero__artwork-image-wrap">
+            <img src="assets/images/hero.png" alt="Пример за премиум дигитална карикатура" class="hero__artwork-image"
+              id="heroImg" />
+          </div>
+          <div class="hero__artwork-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+            <span data-i18n="hero_artwork_label">Премиум Творба</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__scroll">
+      <span data-i18n="hero_scroll">Скролирай надолу</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ========== GALLERY SECTION ========== -->
+  <section class="gallery" id="gallery">
+    <div class="section-header reveal-up">
+      <p class="section-eyebrow" data-i18n="gallery_eyebrow">Нашето Портфолио</p>
+      <h2 class="section-title" data-i18n-html="gallery_title">Всеки момент<br /><em>заслужава изкуство.</em></h2>
+      <p class="section-sub" data-i18n="gallery_sub">Разгледай колекцията ни от персонализирани дигитални карикатури,
+        всяка с любов изработена да улови личността и радостта.</p>
+    </div>
+
+    <div class="gallery__filters reveal-up" role="tablist">
+      <button class="gallery__filter active" data-filter="all" role="tab" aria-selected="true" data-i18n="filter_all">Всички</button>
+      <button class="gallery__filter" data-filter="birthdays" role="tab" data-i18n="filter_birthdays">Рождени дни</button>
+      <button class="gallery__filter" data-filter="weddings" role="tab" data-i18n="filter_weddings">Сватби</button>
+      <button class="gallery__filter" data-filter="couples" role="tab" data-i18n="filter_couples">Двойки</button>
+      <button class="gallery__filter" data-filter="pets" role="tab" data-i18n="filter_pets">Домашни любимци</button>
+      <button class="gallery__filter" data-filter="professions" role="tab" data-i18n="filter_professions">Професии</button>
+      <button class="gallery__filter" data-filter="hobbies" role="tab" data-i18n="filter_hobbies">Хобита</button>
+    </div>
+
+    <div class="gallery__grid" id="galleryGrid">
+      <div class="gallery__item" data-category="birthdays">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/birthdays/626356757_122111312679173674_4938898275952069632_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_0">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="birthdays">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/birthdays/626554447_122111312655173674_4040958436525924443_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_1">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="birthdays">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/birthdays/641561668_122114447361173674_7485709994600724894_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_2">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="weddings">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/weddings/IMG_9663.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_3">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/618652722_122110756833173674_7315865492931472259_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_4">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/619276621_122110758207173674_6649446066503460612_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_5">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/619470150_122110756845173674_7579149500569065523_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_6">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/620125397_122110756869173674_5013724736993744788_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_7">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/622280736_122110758195173674_8659529656800087950_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_8">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/622795593_122110758243173674_1073744116878285230_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_9">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/625901916_122111870565173674_6410277448543382039_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_10">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/627030141_122112221661173674_8200967166794356008_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_11">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/629372433_122112323997173674_1846005382397849874_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_12">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/631279446_122112324003173674_5026284846536310972_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_13">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/633799996_122113212477173674_3771455841024333312_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_14">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/633939431_122113212069173674_1537390500649662468_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_15">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/634851366_122113211667173674_7407314687097995005_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_16">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/635680149_122113212849173674_1454403783125497749_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_17">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/642267711_122114131071173674_2943022856456276706_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_18">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/643407933_122114769939173674_4355295879171472848_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_19">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/9ACB9574-7E4C-429E-8BAC-07BCAE3C1428.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_20">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/IMG_9621.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_21">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/IMG_9625.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_22">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/IMG_9630.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_23">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/IMG_9631.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_24">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/IMG_9635.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_25">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/IMG_9644.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_26">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/IMG_9654.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_27">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/IMG_9728.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_28">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="couples">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/couples/IMG_9780.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_29">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="professions">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/professions/624101962_122110758735173674_2620349167127385376_n.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_30">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="professions">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/professions/IMG_0156.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_31">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="professions">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/professions/IMG_9705.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_32">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="hobbies">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/hobbies/IMG_9638.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_33">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="hobbies">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/hobbies/IMG_9685.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_34">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="hobbies">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/hobbies/IMG_9687.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_35">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item" data-category="hobbies">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/hobbies/IMG_9695.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_36">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--tall" data-category="hobbies">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/hobbies/IMG_9741.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_37">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__item gallery__item--wide" data-category="hobbies">
+        <div class="gallery__card tilt-card">
+          <div class="gallery__skeleton"></div>
+          <img src="assets/images/hobbies/IMG_9743.jpg" alt="Карикатура" class="gallery__img" loading="lazy" />
+          <div class="gallery__overlay">
+            <p class="gallery__overlay-label" data-i18n="overlay_38">Творба</p>
+            <button class="gallery__view-btn ripple-btn" data-i18n="gallery_view">Виж</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Modal -->
+  <div class="modal" id="galleryModal" role="dialog" aria-modal="true">
+    <div class="modal__backdrop" id="modalBackdrop"></div>
+    <div class="modal__content">
+      <button class="modal__close" id="modalClose" aria-label="Затвори">
+                </svg>
+              </div>
+              <p class="upload-zone__text" data-i18n="upload_text">Плъзни и пусни снимката си тук</p>
+              <p class="upload-zone__sub">или <span class="upload-zone__link" data-i18n="upload_link">разгледай
+                  файловете</span></p>
+              <p class="upload-zone__formats" data-i18n="upload_formats">JPG, PNG, HEIC до 20MB</p>
+            </div>
+            <div class="upload-zone__preview" id="uploadPreview" style="display:none;">
+              <img src="" alt="Твоята качена снимка" id="uploadPreviewImg" />
+              <button class="upload-zone__remove" id="removeUpload" aria-label="Премахни снимката">×</button>
+              <div class="upload-zone__success">
+                <svg class="checkmark" viewBox="0 0 52 52">
+                  <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                  <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                </svg>
+                <span data-i18n="upload_success">Снимката е готова!</span>
+              </div>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" class="upload-zone__input"
+              aria-label="Качване на файл" />
+          </div>
+
+          <button class="btn btn--primary btn--next ripple-btn" id="step1Next">
+            <span data-i18n="btn_continue">Продължи</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- STEP 2: Describe -->
+        <div class="config-step" id="step2" data-step="2">
+          <h3 class="config-step__title" data-i18n="step2_title">Опиши своята визия</h3>
+          <p class="config-step__sub" data-i18n="step2_sub">Нарисувай ни картина с думите си.</p>
+
+          <div class="field-group">
+            <label class="field-label" for="visionText" data-i18n="vision_label">Твоята визия за творбата</label>
+            <div class="textarea-wrap">
+              <textarea class="field-textarea" id="visionText" rows="5" data-i18n-placeholder="vision_placeholder"
+                placeholder="напр. 'Карикатура за рожден ден на съпруга ми като супергерой, с нашия лабрадор до него. Фон: залез на плажа. Той обича риболов — може би с въдица?'"
+                maxlength="600"></textarea>
+              <span class="textarea-count"><span id="charCount">0</span>/600</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" data-i18n="style_label">Предпочитан стил</label>
+            <div class="style-chips" role="group">
+              <button class="style-chip active" data-style="classic" type="button"
+                data-i18n="chip_classic">Класически</button>
+              <button class="style-chip" data-style="cartoon" type="button" data-i18n="chip_cartoon">Карикатура</button>
+              <button class="style-chip" data-style="realistic" type="button"
+                data-i18n="chip_realistic">Реалистичен</button>
+              <button class="style-chip" data-style="watercolor" type="button"
+                data-i18n="chip_watercolor">Акварел</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" data-i18n="delivery_label">Формат на доставка</label>
+            <div class="toggle-row">
+              <span data-i18n="print_label">Дигитален файл (PNG/PDF)</span>
+              <label class="liquid-toggle" for="printToggle" aria-label="Добави печатен пакет">
+                <input type="checkbox" id="printToggle" />
+                <span class="liquid-toggle__track"></span>
+              </label>
+              <span><span data-i18n="print_extra">+ Премиум печатен пакет</span> <span
+                  class="badge-price">+€15</span></span>
+            </div>
+          </div>
+
+          <div class="config-step__nav">
+            <button class="btn btn--ghost btn--prev" id="step2Prev" data-i18n="btn_back">← Назад</button>
+            <button class="btn btn--primary btn--next ripple-btn" id="step2Next">
+              <span data-i18n="btn_continue">Продължи</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Customize -->
+        <div class="config-step" id="step3" data-step="3">
+          <h3 class="config-step__title" data-i18n="step3_title">Персонализирай поръчката си</h3>
+          <p class="config-step__sub" data-i18n="step3_sub">Цените се обновяват автоматично с всеки твой избор.</p>
+
+          <div class="counter-section">
+            <div class="counter-card">
+              <div class="counter-card__icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                  <path d="M16 3.13a4 4 0 010 7.75" />
+                </svg>
+              </div>
+              <div class="counter-card__info">
+                <h4 data-i18n="faces_h">Брой лица / хора</h4>
+                <p data-i18n="faces_p">€25 за всяко допълнително лице</p>
+              </div>
+              <div class="counter-card__control">
+                <button class="counter-btn" id="facesDown" aria-label="Намали броя лица">−</button>
+                <span class="counter-val" id="facesVal">1</span>
+                <button class="counter-btn counter-btn--up" id="facesUp" aria-label="Увеличи броя лица">+</button>
+              </div>
+            </div>
+
+            <div class="counter-card">
+              <div class="counter-card__icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                </svg>
+              </div>
+              <div class="counter-card__info">
+                <h4 data-i18n="elements_h">Персонализирани елементи / домашни любимци</h4>
+                <p data-i18n="elements_p">€15 за всеки допълнителен елемент или любимец</p>
+              </div>
+              <div class="counter-card__control">
+                <button class="counter-btn" id="elementsDown" aria-label="Намали елементите">−</button>
+                <span class="counter-val" id="elementsVal">0</span>
+                <button class="counter-btn counter-btn--up" id="elementsUp" aria-label="Увеличи елементите">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="urgency-toggle">
+            <div class="toggle-row">
+              <div>
+                <strong data-i18n="express_h">Експресна доставка (24ч)</strong>
+                <p class="toggle-sub" data-i18n="express_p">С приоритет от нашия старши артист</p>
+              </div>
+              <label class="liquid-toggle" for="expressToggle" aria-label="Включи експресна доставка">
+                <input type="checkbox" id="expressToggle" />
+                <span class="liquid-toggle__track"></span>
+              </label>
+              <span class="badge-price" id="expressBadge">+€20</span>
+            </div>
+          </div>
+
+          <div class="config-step__nav">
+            <button class="btn btn--ghost btn--prev" id="step3Prev" data-i18n="btn_back">← Назад</button>
+            <button class="btn btn--primary btn--next ripple-btn" id="step3Next">
+              <span data-i18n="btn_review">Прегледай поръчката</span> <svg width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Review -->
+        <div class="config-step" id="step4" data-step="4">
+          <h3 class="config-step__title" data-i18n="step4_title">Прегледай поръчката си</h3>
+          <p class="config-step__sub" data-i18n="step4_sub">Всичко изглежда перфектно? Нека го направим официално.</p>
+
+          <div class="review-card">
+            <div class="review-row">
+              <span data-i18n="review_photo_label">Твоята снимка</span>
+              <span class="review-val" id="reviewPhoto" data-i18n="review_photo_val">Качена ✓</span>
+            </div>
+            <div class="review-row">
+              <span data-i18n="review_style_label">Стил</span>
+              <span class="review-val" id="reviewStyle">Класически</span>
+            </div>
+            <div class="review-row">
+              <span data-i18n="review_faces_label">Лица / Хора</span>
+              <span class="review-val"><span id="reviewFaces">1</span></span>
+            </div>
+            <div class="review-row">
+              <span data-i18n="review_elements_label">Персонализирани елементи</span>
+              <span class="review-val"><span id="reviewElements">0</span></span>
+            </div>
+            <div class="review-row">
+              <span data-i18n="review_print_label">Печатен пакет</span>
+              <span class="review-val" id="reviewPrint" data-i18n="review_no">Не</span>
+            </div>
+            <div class="review-row">
+              <span data-i18n="review_express_label">Експресна доставка</span>
+              <span class="review-val" id="reviewExpress" data-i18n="review_no_48">Не (48ч)</span>
+            </div>
+            <div class="review-divider"></div>
+            <div class="review-row review-row--total">
+              <strong data-i18n="review_total">Общо</strong>
+              <strong class="price-display" id="reviewTotal">€59</strong>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="emailInput" data-i18n="email_label">Имейл за доставка</label>
+            <div class="input-wrap">
+              <input type="email" class="field-input" id="emailInput" data-i18n-placeholder="email_placeholder"
+                placeholder="твой@имейл.com" aria-required="true" />
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22 6 12 13 2 6" />
+              </svg>
+            </div>
+            <span class="field-error" id="emailError" data-i18n="email_error">Моля, въведи валиден имейл адрес.</span>
+          </div>
+
+          <div class="config-step__nav">
+            <button class="btn btn--ghost btn--prev" id="step4Prev" data-i18n="btn_back">← Назад</button>
+            <button class="btn btn--primary btn--add-cart ripple-btn" id="addToCartBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+              </svg>
+              <span data-i18n="btn_add_cart">Добави в количката —</span> <span id="cartBtnPrice">€59</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-float" id="priceFloat">
+      <p class="price-float__label" data-i18n="price_label">Твоята цена</p>
+      <p class="price-float__amount" id="priceAmount">€59</p>
+      <p class="price-float__sub" data-i18n="price_sub">ДДС включено</p>
+    </div>
+  </section>
+
+  <!-- ========== STICKY CART PANEL ========== -->
+  <div class="cart-panel" id="cartPanel" role="dialog" aria-modal="true">
+    <div class="cart-panel__header">
+      <h3 data-i18n="cart_title">Твоята количка</h3>
+      <button class="cart-panel__close" id="cartClose" aria-label="Затвори количката">×</button>
+    </div>
+    <div class="cart-panel__body">
+      <div class="cart-item" id="cartItem" style="display:none;">
+        <div class="cart-item__thumb">
+          <img src="" alt="Твоята поръчка" id="cartThumb" />
+        </div>
+        <div class="cart-item__info">
+          <p class="cart-item__title" data-i18n="cart_item_title">Персонализирана дигитална карикатура</p>
+          <p class="cart-item__details" id="cartDetails"></p>
+          <p class="cart-item__price" id="cartItemPrice"></p>
+        </div>
+      </div>
+      <div class="cart-empty" id="cartEmpty">
+        <p data-i18n="cart_empty">Количката ти е празна.</p>
+        <a href="#order" class="btn btn--ghost cart-empty__btn" data-i18n="cart_start">Направи поръчка</a>
+      </div>
+    </div>
+    <div class="cart-panel__footer" id="cartFooter" style="display:none;">
+      <div class="cart-total">
+        <span data-i18n="review_total">Общо</span>
+        <strong id="cartTotal"></strong>
+      </div>
+      <button class="btn btn--primary btn--full ripple-btn" id="checkoutBtn" data-i18n="btn_checkout">Продължи към
+        плащане</button>
+    </div>
+  </div>
+
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" id="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <span class="footer__logo-art">ArtHouse</span>
+          <span class="footer__logo-sub" data-i18n="nav_logo_sub">Карикатури</span>
+        </div>
+        <p class="footer__tagline" data-i18n="footer_tagline">Превръщаме спомените в изключително изкуство. Всеки щрих
+          разказва твоята история.</p>
+        <div class="footer__socials">
+          <a href="https://www.instagram.com/bg_karikaturi/" class="footer__social" aria-label="Instagram"
+            target="_blank" rel="noopener noreferrer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61585210221181" class="footer__social" aria-label="Facebook"
+            target="_blank" rel="noopener noreferrer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer__links-group">
+        <h4 data-i18n="footer_services">Услуги</h4>
+        <ul>
+          <li><a href="#order" data-i18n="service1">Карикатури за рожден ден</a></li>
+          <li><a href="#order" data-i18n="service2">Сватбени портрети</a></li>
+          <li><a href="#order" data-i18n="service3">Творби за двойки</a></li>
+          <li><a href="#order" data-i18n="service4">Илюстрации на животни</a></li>
+          <li><a href="#order" data-i18n="service5">Професионални карикатури</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__links-group">
+        <h4 data-i18n="footer_company">Компания</h4>
+        <ul>
+          <li><a href="#" data-i18n="company1">За нас</a></li>
+          <li><a href="#" data-i18n="company2">Нашите артисти</a></li>
+          <li><a href="#" data-i18n="company3">Блог</a></li>
+          <li><a href="#" data-i18n="company4">Въпроси</a></li>
+          <li><a href="#" data-i18n="company5">Отзиви</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__newsletter">
+        <h4 data-i18n="newsletter_h">Вдъхновявай се</h4>
+        <p data-i18n="newsletter_p">Получавай ексклузивни арт съвети и специални оферти директно в пощата си.</p>
+        <form class="newsletter-form" id="newsletterForm" novalidate>
+          <div class="input-wrap newsletter-wrap">
+            <input type="email" class="field-input newsletter-input" id="newsletterEmail"
+              data-i18n-placeholder="newsletter_placeholder" placeholder="твой@имейл.com"
+              aria-label="Имейл за бюлетин" />
+            <button type="submit" class="btn btn--newsletter ripple-btn" aria-label="Абонирай се">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </button>
+          </div>
+          <span class="field-error newsletter-error" id="newsletterError" data-i18n="newsletter_error">Моля, въведи
+            валиден имейл.</span>
+          <div class="newsletter-success" id="newsletterSuccess">
+            <svg class="checkmark checkmark--sm" viewBox="0 0 52 52">
+              <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+              <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+            </svg>
+            <span data-i18n="newsletter_success">Вече си в списъка!</span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p data-i18n="footer_copy">© 2026 ArtHouse Карикатури. Всички права запазени.</p>
+      <div class="footer__legal">
+        <a href="#" data-i18n="footer_privacy">Политика за поверителност</a>
+        <a href="#" data-i18n="footer_terms">Общи условия</a>
+        <a href="#" data-i18n="footer_refund">Политика за връщане</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>
