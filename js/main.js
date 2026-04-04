@@ -144,45 +144,103 @@ document.addEventListener('click', function (e) {
   });
 })();
 
-/* ── GALLERY FILTER ── */
+/* ── GALLERY ── */
 (function initGallery() {
-  const filters = document.querySelectorAll('.gallery__filter');
-  const items = document.querySelectorAll('.gallery__item');
-  const modal = document.getElementById('galleryModal');
-  const modalImg = document.getElementById('modalImage');
+  const reel       = document.getElementById('galleryReel');
+  const progressEl = document.getElementById('galleryProgress');
+  const prevBtn    = document.getElementById('galleryPrev');
+  const nextBtn    = document.getElementById('galleryNext');
+  const filterBtns = document.querySelectorAll('.gallery__filter');
+  const modal      = document.getElementById('galleryModal');
+  const modalImg   = document.getElementById('modalImage');
   const modalLabel = document.getElementById('modalLabel');
   const modalClose = document.getElementById('modalClose');
-  const backdrop = document.getElementById('modalBackdrop');
+  const backdrop   = document.getElementById('modalBackdrop');
 
-  filters.forEach(btn => {
+  if (!reel) return;
+
+  /* ── Progress + arrow state ──────────────────────── */
+  function updateUI() {
+    const max = reel.scrollWidth - reel.clientWidth;
+    const pct = max > 0 ? (reel.scrollLeft / max) * 100 : 0;
+    if (progressEl) progressEl.style.width = pct + '%';
+    if (prevBtn) prevBtn.disabled = reel.scrollLeft <= 2;
+    if (nextBtn) nextBtn.disabled = reel.scrollLeft >= max - 2;
+  }
+  reel.addEventListener('scroll', updateUI, { passive: true });
+  updateUI();
+
+  /* ── Arrow click → scroll by 80% of visible width ── */
+  function scrollReel(dir) {
+    reel.scrollBy({ left: dir * reel.clientWidth * 0.8, behavior: 'smooth' });
+  }
+  if (prevBtn) prevBtn.addEventListener('click', () => scrollReel(-1));
+  if (nextBtn) nextBtn.addEventListener('click', () => scrollReel(1));
+
+  /* ── Keyboard ──────────────────────────────────────── */
+  document.addEventListener('keydown', e => {
+    if (document.activeElement && document.activeElement.closest('.configurator')) return;
+    if (e.key === 'ArrowLeft')  scrollReel(-1);
+    if (e.key === 'ArrowRight') scrollReel(1);
+  });
+
+  /* ── Drag-to-scroll (desktop mouse) ──────────────── */
+  let isDragging = false, startX = 0, startScroll = 0, hasDragged = false;
+
+  reel.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    isDragging  = true;
+    hasDragged  = false;
+    startX      = e.clientX;
+    startScroll = reel.scrollLeft;
+    reel.classList.add('is-dragging');
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    reel.classList.remove('is-dragging');
+    // small delay so click fires correctly after drag
+    setTimeout(() => { hasDragged = false; }, 100);
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 5) hasDragged = true;
+    reel.scrollLeft = startScroll - dx;
+    updateUI();
+  });
+
+  /* ── Filter ───────────────────────────────────────── */
+  filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      filters.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-      btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
-      const filter = btn.dataset.filter;
-      items.forEach(item => {
-        const match = filter === 'all' || item.dataset.category === filter;
-        item.style.transition = 'opacity 0.3s, transform 0.3s';
-        if (match) {
-          item.style.opacity = '0';
+      filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const cat = btn.dataset.filter;
+      reel.querySelectorAll('.gallery__item').forEach(item => {
+        if (cat === 'all' || item.dataset.category === cat) {
           item.classList.remove('hidden');
-          requestAnimationFrame(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; });
         } else {
-          item.style.opacity = '0';
-          item.style.transform = 'scale(0.95)';
-          setTimeout(() => item.classList.add('hidden'), 300);
+          item.classList.add('hidden');
         }
       });
+      reel.scrollLeft = 0;
+      setTimeout(updateUI, 50);
     });
   });
 
-  // View buttons open modal
+  /* ── Modal ────────────────────────────────────────── */
   document.addEventListener('click', e => {
-    const viewBtn = e.target.closest('.gallery__view-btn');
-    if (!viewBtn) return;
-    const card = viewBtn.closest('.gallery__card');
-    const img = card.querySelector('.gallery__img');
+    if (hasDragged) return; // don't open modal after drag
+    const btn = e.target.closest('.gallery__view-btn');
+    if (!btn) return;
+    const card  = btn.closest('.gallery__card');
+    if (!card) return;
+    const img   = card.querySelector('.gallery__img');
     const label = card.querySelector('.gallery__overlay-label');
-    modalImg.src = img.src; modalImg.alt = img.alt;
+    modalImg.src  = img ? img.src  : '';
+    modalImg.alt  = img ? img.alt  : '';
     modalLabel.textContent = label ? label.textContent : '';
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -192,121 +250,20 @@ document.addEventListener('click', function (e) {
     modal.classList.remove('open');
     document.body.style.overflow = '';
   }
-  modalClose.addEventListener('click', closeModal);
-  backdrop.addEventListener('click', closeModal);
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  if (backdrop)   backdrop.addEventListener('click', closeModal);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  // Skeleton removal when images load
-  document.querySelectorAll('.gallery__img').forEach(img => {
-    function onLoad() { img.previousElementSibling.classList.add('hidden'); }
-    if (img.complete) { onLoad(); }
-    else { img.addEventListener('load', onLoad); }
+  /* ── Skeleton loader removal ──────────────────────── */
+  reel.querySelectorAll('.gallery__img').forEach(img => {
+    const sk = img.previousElementSibling;
+    function onLoad() { if (sk) sk.classList.add('hidden'); }
+    if (img.complete) onLoad();
+    else img.addEventListener('load', onLoad);
   });
 })();
 
-/* ── GALLERY SLIDESHOW ── */
-(function initSlideshow() {
-  const gallerySection = document.getElementById('gallery');
-  const track = document.getElementById('galleryTrack');
-  const dotsEl = document.getElementById('galleryDots');
-  const prevBtn = document.getElementById('galleryPrev');
-  const nextBtn = document.getElementById('galleryNext');
-  const filterBtns = document.querySelectorAll('.gallery__filter');
 
-  let slides = [];
-  let current = 0;
-  let startX = 0;
-
-  function buildSlides(filter) {
-    const items = document.querySelectorAll('#galleryGrid .gallery__item');
-    slides = [];
-    items.forEach(item => {
-      if (filter === 'all' || item.dataset.category === filter) {
-        const img = item.querySelector('.gallery__img');
-        const label = item.querySelector('.gallery__overlay-label');
-        if (img) slides.push({ src: img.src, alt: img.alt || '', label: label ? label.textContent : '' });
-      }
-    });
-    track.innerHTML = '';
-    slides.forEach((s, i) => {
-      const slide = document.createElement('div');
-      slide.className = 'gallery__slide';
-      slide.innerHTML = `<img src="${s.src}" alt="${s.alt}" loading="lazy" /><div class="gallery__overlay"><p class="gallery__overlay-label">${s.label}</p><button class="gallery__view-btn ripple-btn" data-slide="${i}">Виж</button></div>`;
-      track.appendChild(slide);
-    });
-    dotsEl.innerHTML = '';
-    slides.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.className = 'gallery__dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
-      dot.addEventListener('click', () => goTo(i));
-      dotsEl.appendChild(dot);
-    });
-    goTo(0, false);
-  }
-
-  function goTo(idx, animate) {
-    animate = animate !== false;
-    current = Math.max(0, Math.min(idx, slides.length - 1));
-    track.style.transition = animate ? 'transform 0.45s cubic-bezier(0.22,1,0.36,1)' : 'none';
-    track.style.transform = 'translateX(-' + (current * 100) + '%)';
-    dotsEl.querySelectorAll('.gallery__dot').forEach((d, i) => d.classList.toggle('active', i === current));
-    prevBtn.disabled = current === 0;
-    nextBtn.disabled = current === slides.length - 1;
-  }
-
-  prevBtn.addEventListener('click', () => goTo(current - 1));
-  nextBtn.addEventListener('click', () => goTo(current + 1));
-
-  document.addEventListener('keydown', e => {
-    if (!gallerySection.classList.contains('gallery--slideshow')) return;
-    if (e.key === 'ArrowLeft') goTo(current - 1);
-    if (e.key === 'ArrowRight') goTo(current + 1);
-  });
-
-  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 40) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
-  });
-
-  track.addEventListener('click', e => {
-    const btn = e.target.closest('.gallery__view-btn');
-    if (!btn) return;
-    const idx = parseInt(btn.dataset.slide, 10);
-    const modal = document.getElementById('galleryModal');
-    const modalImg = document.getElementById('modalImage');
-    const modalLabel = document.getElementById('modalLabel');
-    if (slides[idx]) {
-      modalImg.src = slides[idx].src; modalImg.alt = slides[idx].alt;
-      modalLabel.textContent = slides[idx].label;
-      modal.classList.add('open'); document.body.style.overflow = 'hidden';
-    }
-  });
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (gallerySection.classList.contains('gallery--slideshow')) {
-        buildSlides(btn.dataset.filter);
-      }
-    });
-  });
-
-  function checkSlideshow() {
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile && !gallerySection.classList.contains('gallery--slideshow')) {
-      gallerySection.classList.add('gallery--slideshow');
-      const activeFilter = document.querySelector('.gallery__filter.active');
-      buildSlides(activeFilter ? activeFilter.dataset.filter : 'all');
-    } else if (!isMobile && gallerySection.classList.contains('gallery--slideshow')) {
-      gallerySection.classList.remove('gallery--slideshow');
-      track.innerHTML = ''; dotsEl.innerHTML = '';
-    }
-  }
-
-  checkSlideshow();
-  window.addEventListener('resize', checkSlideshow);
-})();
 
 
 /* ── CONFIGURATOR ── */

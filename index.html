@@ -156,14 +156,10 @@
       <button class="gallery__filter" data-filter="hobbies" role="tab" data-i18n="filter_hobbies">Хобита</button>
     </div>
 
-    <div class="gallery__slideshow" id="gallerySlideshow">
-      <button class="gallery__arrow gallery__arrow--prev" id="galleryPrev" aria-label="Предишна">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15 18 9 12 15 6"/>
-        </svg>
-      </button>
-      <div class="gallery__track-wrap">
-        <div class="gallery__grid" id="galleryGrid">
+
+    <div class="gallery__reel-wrap">
+      <div class="gallery__reel" id="galleryReel">
+
       <div class="gallery__item" data-category="birthdays">
         <div class="gallery__card tilt-card">
           <div class="gallery__skeleton"></div>
@@ -554,18 +550,21 @@
           </div>
         </div>
       </div>
-        </div> <!-- end gallery__grid -->
-        <div class="gallery__track" id="galleryTrack"></div>
-        <!-- JS populates galleryTrack slides on mobile -->
-      </div> <!-- end gallery__track-wrap -->
-      <button class="gallery__arrow gallery__arrow--next" id="galleryNext" aria-label="Следваща">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </button>
-    </div> <!-- end gallery__slideshow -->
-    <div class="gallery__dots" id="galleryDots"></div>
-    </div> <!-- end .gallery__slideshow (old duplicate tag removed) -->
+
+      </div><!-- end gallery__reel -->
+
+      <!-- Controls -->
+      <div class="gallery__controls">
+        <button class="gallery__btn gallery__btn--prev" id="galleryPrev" aria-label="Предишна">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="gallery__progress-track"><div class="gallery__progress-fill" id="galleryProgress"></div></div>
+        <button class="gallery__btn gallery__btn--next" id="galleryNext" aria-label="Следваща">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div><!-- end gallery__reel-wrap -->
+
   </section>
   <div class="modal" id="galleryModal" role="dialog" aria-modal="true">
     <div class="modal__backdrop" id="modalBackdrop"></div>
