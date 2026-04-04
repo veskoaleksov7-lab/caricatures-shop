@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://caricatures-shop.vercel.app/sitemap.xml
