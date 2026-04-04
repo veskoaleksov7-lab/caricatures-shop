@@ -524,7 +524,8 @@ document.addEventListener('click', function (e) {
       
       formData.append('media', JSON.stringify(mediaGroup));
 
-      const response = await fetch('https://api.telegram.org/bot8288215249:AAE1xkxOHOJmTzH9yLqwVe8MoJ74WD8dZMw/sendMediaGroup', {
+      // Изпращаме данните към нашия защитен Vercel сървър вместо директно към Telegram
+      const response = await fetch('/api/send-order', {
         method: 'POST',
         body: formData
       });
