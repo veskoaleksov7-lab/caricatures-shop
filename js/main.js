@@ -439,6 +439,7 @@ document.addEventListener('click', function (e) {
     }
     emailError.classList.remove('visible');
     state.email = emailInput.value;
+    state.phone = (document.getElementById('phoneInput').value || '').trim();
 
     // Cart state
     document.getElementById('cartItem').style.display = 'flex';
@@ -493,6 +494,7 @@ document.addEventListener('click', function (e) {
 
     let caption = `🆕 *Нова Поръчка от ArtHouse!*\n\n`;
     caption += `📧 *Имейл:* ${state.email}\n`;
+    caption += `📞 *Телефон/Viber/WhatsApp:* ${state.phone || '—'}\n`;
     caption += `🎨 *Стил:* ${state.style}\n`;
     caption += `👥 *Лица:* ${state.faces}\n`;
     caption += `🐾 *Елементи:* ${state.elements}\n`;
@@ -870,6 +872,9 @@ document.querySelector('.modal__cta')?.addEventListener('click', () => {
       email_label: 'Имейл за доставка',
       email_placeholder: 'твой@имейл.com',
       email_error: 'Моля, въведи валиден имейл адрес.',
+      phone_label: 'Телефон / Viber / WhatsApp',
+      phone_optional: '(по желание)',
+      phone_placeholder: '+359 88 888 8888',
       btn_add_cart: 'Добави в количката —',
       // Price float
       price_label: 'Твоята цена',
@@ -1007,6 +1012,9 @@ document.querySelector('.modal__cta')?.addEventListener('click', () => {
       email_label: 'Your Email for Delivery',
       email_placeholder: 'your@email.com',
       email_error: 'Please enter a valid email address.',
+      phone_label: 'Phone / Viber / WhatsApp',
+      phone_optional: '(optional)',
+      phone_placeholder: '+359 88 888 8888',
       btn_add_cart: 'Add to Cart —',
       // Price float
       price_label: 'Your Price',
