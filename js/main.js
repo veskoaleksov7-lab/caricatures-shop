@@ -280,7 +280,7 @@ document.addEventListener('click', function (e) {
     faces: 1, elements: 0,
     printSize: 'none', // 'none' | 'a4' | 'a3'
     express: false,
-    style: 'classic',
+    style: 'caricature',
     email: ''
   };
 
@@ -320,7 +320,6 @@ document.addEventListener('click', function (e) {
   function updateReview() {
     document.getElementById('reviewFaces').textContent = state.faces;
     document.getElementById('reviewElements').textContent = state.elements;
-    document.getElementById('reviewStyle').textContent = state.style.charAt(0).toUpperCase() + state.style.slice(1);
     const printLabels = { none: 'Не', a4: 'А4 рамка (+€5)', a3: 'А3 рамка (+€10)' };
     document.getElementById('reviewPrint').textContent = printLabels[state.printSize] || 'Не';
     document.getElementById('reviewExpress').textContent = state.express ? 'Да (+€10, 24ч)' : 'Не (48ч)';
@@ -361,15 +360,6 @@ document.addEventListener('click', function (e) {
     });
   });
 
-  // Style chips
-  document.querySelectorAll('.style-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('.style-chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      state.style = chip.dataset.style;
-      updateReview();
-    });
-  });
 
   // Textarea char count
   const visionText = document.getElementById('visionText');
